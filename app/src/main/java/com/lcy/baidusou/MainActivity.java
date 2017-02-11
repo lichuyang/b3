@@ -4,6 +4,8 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.Html;
+import android.text.method.LinkMovementMethod;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -45,6 +47,7 @@ public class MainActivity extends Activity {
     private PullUpLoadMoreListView listView;
     private RelativeLayout textLayout;
     private TextView numberView;
+    private TextView tip2View;
     private boolean isLoading = false;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,6 +55,7 @@ public class MainActivity extends Activity {
         setContentView(R.layout.activity_main);
         UpdateHelper updateHelper = new UpdateHelper.Builder(this)
                 .checkUrl("http://www.xxx.com/static/update.json")
+                .isHintNewVersion(false)
                 .isAutoInstall(true) //设置为false需在下载完手动点击安装;默认值为true，下载后自动安装。
                 .build();
         updateHelper.check();
@@ -60,6 +64,10 @@ public class MainActivity extends Activity {
         listView = (PullUpLoadMoreListView)findViewById(R.id.listview);
         textLayout = (RelativeLayout)findViewById(R.id.text_layout);
         numberView = (TextView)findViewById(R.id.total_number);
+        tip2View = (TextView)findViewById(R.id.tip2);
+        String tip2Text = "本APP可以直接打开百度网盘客户端保存和下载文件，如未安装百度网盘官方客户端，请安装后使用。浏览器可访问 <a href='http://www.vdashuju.com/?android'>http://www.vdashuju.com</a> 。";
+        tip2View.setText(Html.fromHtml(tip2Text));
+        tip2View.setMovementMethod(LinkMovementMethod.getInstance());
         listView.setAdapter(null);
         listView.setOnLoadMoreListener(new PullUpLoadMoreListView.OnLoadMoreListener() {
             @Override
